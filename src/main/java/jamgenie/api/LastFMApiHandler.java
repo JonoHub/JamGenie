@@ -1,4 +1,4 @@
-package main.jamgenie.api;
+package main.java.jamgenie.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,6 +13,7 @@ public class LastFMApiHandler {
 
     /**
      * Sends a GET request to the Last.fm API.
+     * example request : http://ws.audioscrobbler.com/2.0/?method=getartisttopalbums&artist=cher&api_key=a51a10f5ad5015da252cad230eec7ad4&format=json
      *
      * @param params Query parameters as key-value pairs.
      * @return API response as a String.
@@ -56,5 +57,4 @@ public class LastFMApiHandler {
             throw new ApiException("Error while calling Last.fm API: " + e.getMessage(), e);
         }
     }
-    
 }

@@ -1,4 +1,4 @@
-package main.jamgenie.api;
+package main.java.jamgenie.api;
 
 public class ApiException extends Exception{
     public ApiException(String message) {
