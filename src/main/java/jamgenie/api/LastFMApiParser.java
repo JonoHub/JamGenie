@@ -3,6 +3,7 @@ package main.java.jamgenie.api;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import main.java.jamgenie.model.Album;
 
@@ -20,27 +21,31 @@ public class LastFMApiParser {
      */
     public List<Album> parseAlbums(String jsonResponse) {
         List<Album> albums = new ArrayList<>();
-        JsonObject jsonObject = com.google.gson.JsonParser.parseString(jsonResponse).getAsJsonObject();
+        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
 
         // Check if the "albums" object and the "album" array are present
         if (jsonObject.has("results")) {
-            JsonObject albumsObject = jsonObject.getAsJsonObject("albums");
-            JsonArray albumArray = albumsObject.getAsJsonArray("album");
+            JsonObject resultsObject = jsonObject.getAsJsonObject("results");
+            if( resultsObject.has("albummatches")) {
+                JsonObject albumMatchesObject = resultsObject.getAsJsonObject("albummatches");
+                if (albumMatchesObject.has("album")) {
+                    JsonArray albumArray = albumMatchesObject.getAsJsonArray("album");
 
-            // Iterate through each album and create Album objects
-            for (JsonElement albumElement : albumArray) {
-                JsonObject albumObject = albumElement.getAsJsonObject();
+                    // create album objects, iterating through array.
+                    for (JsonElement albumElement : albumArray) {
+                        JsonObject albumObject = albumElement.getAsJsonObject();
 
-                // Extract album details
-                String name = albumObject.get("name").getAsString();
-                String artist = albumObject.get("artist").getAsString();
-                String url = albumObject.get("url").getAsString();
-
-                // Extract image URL (assume we want the "medium" size image)
-                String imageUrl = extractImageUrl(albumObject);
-
-                // Create an Album object and add it to the list
-                albums.add(new Album(name, artist, url, imageUrl));
+                        String name = albumObject.get("name").getAsString();
+                        String artist = albumObject.get("artist").getAsString();
+                        String url = albumObject.get("url").getAsString();
+        
+                        // extract image URL 
+                        String imageUrl = extractImageUrl(albumObject);
+        
+                        // create an Album object and add it to the list
+                        albums.add(new Album(name, artist, url, imageUrl));
+                    }
+                }
             }
         }
         return albums;
@@ -58,7 +63,7 @@ public class LastFMApiParser {
             for (JsonElement imageElement : imageArray) {
                 JsonObject imageObject = imageElement.getAsJsonObject();
                 // Check for medium size image
-                if (imageObject.has("size") && imageObject.get("size").getAsString().equals("medium")) {
+                if (imageObject.has("size") && imageObject.get("size").getAsString().equals("extralarge")) {
                     return imageObject.get("#text").getAsString();
                 }
             }

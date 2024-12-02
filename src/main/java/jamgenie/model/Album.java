@@ -31,6 +31,6 @@ public class Album {
 
     @Override
     public String toString() {
-        return "Album{name='" + name + "', artist='" + artist + "', url='" + url + "', imageUrl='" + imageUrl + "'}";
+        return "Album{name='" + name + "', artist='" + artist + "', imageUrl='" + imageUrl + "'}";
     }
 }

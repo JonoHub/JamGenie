@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) throws ApiException {
         AlbumSearchController albumSearchController = new AlbumSearchController();
 
-        String albumName = "thriller";
+        String albumName = "hamilton";
 
         albumSearchController.getAlbumSearch(albumName);
     }

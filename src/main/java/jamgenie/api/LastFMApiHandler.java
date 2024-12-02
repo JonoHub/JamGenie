@@ -30,7 +30,7 @@ public class LastFMApiHandler {
                            .append("&");
             }
             queryString.append("api_key=").append(API_KEY).append("&format=json");
-            System.out.println(API_BASE_URL + queryString);
+            //System.out.println(API_BASE_URL + queryString);
             // form the full URL
             URI uri = new URI(API_BASE_URL + queryString);
             URL url = uri.toURL();

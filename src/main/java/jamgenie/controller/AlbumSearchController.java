@@ -19,6 +19,8 @@ public class AlbumSearchController {
     }
 
     public void getAlbumSearch(String albumName) throws ApiException {
+        albumName = fixAlbumName(albumName);
+        //System.out.println(albumName);
         String method = "album.search";
         Map<String, String> params = new HashMap<>();
 
@@ -26,10 +28,22 @@ public class AlbumSearchController {
         params.put("album", albumName);
 
         String response = apiHandler.sendRequest(params);
-        System.out.println(response);
+        //System.out.println(response);
         List<Album> albums = apiParser.parseAlbums(response);
+        //System.out.println("================================================================================================================");
+        int i = 0;
         for (Album album : albums) {
-            album.toString();
+            if (i < 11) {
+            System.out.println(i + " : " + album.toString());
+            }
+            i++;
         }
+    }
+
+    private String fixAlbumName(String albumName) {
+        if (albumName == null){
+            return null;
+        }
+        return albumName.replace(" ","+");
     }
 }
