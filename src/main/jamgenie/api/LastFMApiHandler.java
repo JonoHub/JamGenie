@@ -56,4 +56,5 @@ public class LastFMApiHandler {
             throw new ApiException("Error while calling Last.fm API: " + e.getMessage(), e);
         }
     }
+    
 }
