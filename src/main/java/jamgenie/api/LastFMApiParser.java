@@ -13,6 +13,7 @@ public class LastFMApiParser {
 
     /**
      * Parses the JSON response for album information and returns a list of Album objects.
+     * This would be the products of a album.search request.
      *
      * @param jsonResponse JSON response as a String.
      * @return A list of Album objects.
@@ -22,7 +23,7 @@ public class LastFMApiParser {
         JsonObject jsonObject = com.google.gson.JsonParser.parseString(jsonResponse).getAsJsonObject();
 
         // Check if the "albums" object and the "album" array are present
-        if (jsonObject.has("albums")) {
+        if (jsonObject.has("results")) {
             JsonObject albumsObject = jsonObject.getAsJsonObject("albums");
             JsonArray albumArray = albumsObject.getAsJsonArray("album");
 
