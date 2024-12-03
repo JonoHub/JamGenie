@@ -6,12 +6,30 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import main.java.jamgenie.model.Album;
+import main.java.jamgenie.model.IMedia;
+import main.java.jamgenie.model.Track;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LastFMApiParser {
 
+
+    public List<IMedia> apiParser(String jsonResponse, String method) {
+        String[] parts = method.split("\\.");
+        String type = parts[0];
+
+        switch (type) {
+            case "album" : 
+                return new ArrayList<>(parseAlbums(jsonResponse));
+                
+            case "track" : 
+                return new ArrayList<>(parseTracks(jsonResponse));
+
+            default:
+            throw new IllegalArgumentException("Unknown method type: " + type);
+        }
+    }
     /**
      * Parses the JSON response for album information and returns a list of Album objects.
      * This would be the products of a album.search request.
@@ -49,6 +67,37 @@ public class LastFMApiParser {
             }
         }
         return albums;
+    }
+
+    public List<Track> parseTracks(String jsonResponse) {
+        List<Track> tracks = new ArrayList<>();
+        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+
+        if (jsonObject.has("results")) {
+            JsonObject resultsObject = jsonObject.getAsJsonObject("results");
+            if (resultsObject.has("trackmatches")) {
+                JsonObject trackmatchesObject = resultsObject.getAsJsonObject("trackmatches");
+                if (trackmatchesObject.has("track")) {
+                    JsonArray trackArray = trackmatchesObject.getAsJsonArray("track");
+                    
+
+                    for (JsonElement trackElement : trackArray) {
+                            JsonObject trackObject = trackElement.getAsJsonObject();
+
+                            String name = trackObject.get("name").getAsString();
+                            String artist = trackObject.get("artist").getAsString();
+                            String url = trackObject.get("url").getAsString();
+
+                            String imageUrl = extractImageUrl(trackObject);
+
+                            tracks.add(new Track(name, artist, url, imageUrl));
+
+                    }
+                }
+            }
+        }
+
+        return tracks;
     }
 
     /**

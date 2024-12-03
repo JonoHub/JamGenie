@@ -1,6 +1,6 @@
 package main.java.jamgenie.model;
 
-public class Album {
+public class Album implements IMedia{
     private String name;
     private String artist;
     private String url;
