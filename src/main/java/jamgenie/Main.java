@@ -8,13 +8,19 @@ public class Main {
     public static void main(String[] args) throws ApiException {
         SearchController searchController = new SearchController();
 
-        String albumName = "era vulgaris";
-        String albumMethod = "album.search";
+        // String albumName = "era vulgaris";
+        // String albumMethod = "album.search";
 
-        String trackname = "Learn to Fly";
-        String trackMethod = "track.search";
+        // String trackName = "Learn to Fly";
+        // String trackMethod = "track.search";
 
-        //searchController.search(albumName, albumMethod);
-        searchController.search(trackname, trackMethod);
+        String trackName = "Adore You";
+        String trackMethod = "track.getsimilar";
+        String artistName = "Harry Styles";
+
+        // searchController.search(albumName, albumMethod);
+        // System.out.println("----------------------------");
+        // searchController.search(trackName, trackMethod);
+        searchController.search(trackName, trackMethod, artistName);
     }
 }

@@ -16,18 +16,21 @@ public class LastFMApiParser {
 
 
     public List<IMedia> apiParser(String jsonResponse, String method) {
-        String[] parts = method.split("\\.");
-        String type = parts[0];
+        // String[] parts = method.split("\\.");
+        // String type = parts[0];
 
-        switch (type) {
-            case "album" : 
+        switch (method) {
+            case "album.search" : 
                 return new ArrayList<>(parseAlbums(jsonResponse));
                 
-            case "track" : 
+            case "track.search" : 
                 return new ArrayList<>(parseTracks(jsonResponse));
 
-            default:
-            throw new IllegalArgumentException("Unknown method type: " + type);
+            case "track.getsimilar" :
+                return new ArrayList<>(parseSimilarTracks(jsonResponse));
+            default: {
+                throw new IllegalArgumentException("Unsupported method: " + method);
+            }
         }
     }
     /**
@@ -99,6 +102,37 @@ public class LastFMApiParser {
 
         return tracks;
     }
+
+    public List<Track> parseSimilarTracks(String jsonResponse) {
+        List<Track> tracks = new ArrayList<>();
+        JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
+
+        if (jsonObject.has("similartracks")) {
+            JsonObject similarObject = jsonObject.getAsJsonObject("similartracks");
+            if (similarObject.has("track")) {
+                JsonArray tracksArray = similarObject.getAsJsonArray("track");
+                    
+
+                for (JsonElement trackElement : tracksArray) {
+                    JsonObject trackObject = trackElement.getAsJsonObject();
+
+                    String name = trackObject.get("name").getAsString();
+                    String url = trackObject.get("url").getAsString();
+
+                    JsonObject artistObject = trackObject.getAsJsonObject("artist");
+                    String artist = artistObject.get("name").getAsString();
+
+                    String imageUrl = extractImageUrl(trackObject);
+    
+                    tracks.add(new Track(name, artist, url, imageUrl));
+                }
+            }
+        }
+        return tracks;
+    }
+
+       
+    
 
     /**
      * Extracts the image URL for the "medium" size image from the album object.

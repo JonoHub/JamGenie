@@ -18,13 +18,22 @@ public class SearchController {
         this.apiParser = new LastFMApiParser();
     }
 
-    public void search(String name, String method) throws ApiException {
+    public void search(String name, String method, String artist) throws ApiException {
         switch (method) {
             case "album.search" : {
                 searchAlbum(name);
+                break;
             }
             case "track.search" : {
-                searchTrack(name);
+                searchTrack(name, method);
+                break;
+            }
+            case "track.getsimilar" : {
+                searchSimilarTrack(name, method, artist);
+                break;
+            }
+            default: {
+                throw new IllegalArgumentException("Unsupported method: " + method);
             }
         }
     }
@@ -35,7 +44,7 @@ public class SearchController {
      * @throws ApiException
      */
     private void searchAlbum(String albumName) throws ApiException {
-        albumName = fixAlbumName(albumName);
+        albumName = fixName(albumName);
         //System.out.println(albumName);
         String method = "album.search";
         Map<String, String> params = new HashMap<>();
@@ -46,13 +55,13 @@ public class SearchController {
         String response = apiHandler.sendRequest(params);
         //System.out.println(response);
         List<IMedia> albums = apiParser.apiParser(response, method);
-        //System.out.println("================================================================================================================");
         int i = 0;
         for (IMedia album : albums) {
-            if (i < 11) {
             System.out.println(i + " : " + album.toString());
-            }
             i++;
+            if (i >= 11) {
+                break;
+            }
         }
     }
 
@@ -62,10 +71,10 @@ public class SearchController {
      * @param albumName
      * @throws ApiException
      */
-    private void searchTrack(String trackName) throws ApiException {
-        trackName = fixAlbumName(trackName);
+    private void searchTrack(String trackName, String method) throws ApiException {
+        trackName = fixName(trackName);
         //System.out.println(trackName);
-        String method = "track.search";
+        // String method = "track.search";
         Map<String, String> params = new HashMap<>();
 
         params.put("method", method);
@@ -85,6 +94,37 @@ public class SearchController {
         }
     }
 
+    /**
+     * Controller for the album.search method. Called when the user searches for an albumName.
+     * 
+     * @param albumName
+     * @throws ApiException
+     */
+    private void searchSimilarTrack(String trackName, String method, String artist) throws ApiException {
+        trackName = fixName(trackName);
+        artist = fixName(artist);
+        // System.out.println(trackName);
+        // String method = "track.search";
+        Map<String, String> params = new HashMap<>();
+
+        params.put("method", method);
+        params.put("artist", artist);
+        params.put("track", trackName);
+
+        String response = apiHandler.sendRequest(params);
+        // System.out.println(response);
+        List<IMedia> tracks = apiParser.apiParser(response, method);
+        // System.out.println(tracks.size());
+        //System.out.println("================================================================================================================");
+        int i = 0;
+        for (IMedia track : tracks) {
+            if (i < 11) {
+            System.out.println(i + " : " + track.toString());
+            }
+            i++;
+        }
+    }
+
 
     /**
      * Replaces all empty spaces (" ") in a String with '+'
@@ -92,7 +132,7 @@ public class SearchController {
      * @param albumName
      * @return
      */
-    private String fixAlbumName(String albumName) {
+    private String fixName(String albumName) {
         if (albumName == null){
             return null;
         }
