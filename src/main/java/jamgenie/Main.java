@@ -1,26 +1,36 @@
-package main.java.jamgenie;
+package jamgenie;
 
-import main.java.jamgenie.api.ApiException;
-import main.java.jamgenie.controller.SearchController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 
-public class Main {
 
-    public static void main(String[] args) throws ApiException {
-        SearchController searchController = new SearchController();
+public class Main extends Application {
 
-        // String albumName = "era vulgaris";
-        // String albumMethod = "album.search";
+    public static void main(String[] args) {
+        // Launch the JavaFX application
+        launch(args);
+    }
 
-        // String trackName = "Learn to Fly";
-        // String trackMethod = "track.search";
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        try {
+            // Load the FXML file
+            
 
-        String trackName = "Adore You";
-        String trackMethod = "track.getsimilar";
-        String artistName = "Harry Styles";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScene.fxml"));
+            System.out.println(getClass().getResource("MainScene.fxml"));
+            Parent root = loader.load();
 
-        // searchController.search(albumName, albumMethod);
-        // System.out.println("----------------------------");
-        // searchController.search(trackName, trackMethod);
-        searchController.search(trackName, trackMethod, artistName);
+            // Set up the Scene and Stage
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("JamGenie");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

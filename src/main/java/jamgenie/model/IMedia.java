@@ -1,4 +1,4 @@
-package main.java.jamgenie.model;
+package jamgenie.model;
 
 public interface IMedia {
     String getName();

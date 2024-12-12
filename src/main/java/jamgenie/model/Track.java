@@ -1,4 +1,4 @@
-package main.java.jamgenie.model;
+package jamgenie.model;
 
 /**
  * Class for a Track. A track is a single song
@@ -34,6 +34,6 @@ public class Track implements IMedia {
 
     @Override
     public String toString() {
-        return name + " by " + artist + " (" + url + ")";
+        return name + " by " + artist + " (" + imageUrl + ")";
     }
 }

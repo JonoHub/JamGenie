@@ -1,4 +1,4 @@
-package main.java.jamgenie.api;
+package jamgenie.api;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

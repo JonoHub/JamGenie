@@ -1,13 +1,13 @@
-package main.java.jamgenie.api;
+package jamgenie.api;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import main.java.jamgenie.model.Album;
-import main.java.jamgenie.model.IMedia;
-import main.java.jamgenie.model.Track;
+import jamgenie.model.Album;
+import jamgenie.model.IMedia;
+import jamgenie.model.Track;
 
 import java.util.ArrayList;
 import java.util.List;

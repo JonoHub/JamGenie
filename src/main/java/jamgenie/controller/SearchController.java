@@ -1,13 +1,13 @@
-package main.java.jamgenie.controller;
+package jamgenie.controller;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import main.java.jamgenie.api.ApiException;
-import main.java.jamgenie.api.LastFMApiHandler;
-import main.java.jamgenie.api.LastFMApiParser;
-import main.java.jamgenie.model.IMedia;
+import jamgenie.api.ApiException;
+import jamgenie.api.LastFMApiHandler;
+import jamgenie.api.LastFMApiParser;
+import jamgenie.model.IMedia;
 
 public class SearchController {
     private final LastFMApiHandler apiHandler;
