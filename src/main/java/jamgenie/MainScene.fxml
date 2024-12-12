@@ -38,11 +38,11 @@
 
       <ButtonBar layoutY="115.0" prefHeight="39.0" prefWidth="167.0">
         <buttons>
-            <Button fx:id="trackButton" mnemonicParsing="false" onAction="#trackMode" text="Tracks" />
+            <Button fx:id="trackButton" disable="true" mnemonicParsing="false" onAction="#trackMode" text="Tracks" />
             <Button fx:id="albumButton" mnemonicParsing="false" onAction="#albumMode" text="Albums" />
         </buttons>
       </ButtonBar>
-      <TextField fx:id="artistPrompt" layoutX="193.0" layoutY="159.0" prefHeight="25.0" prefWidth="213.0" promptText="Add artist" />
+      <TextField fx:id="artistPrompt" focusTraversable="false" layoutX="193.0" layoutY="159.0" prefHeight="25.0" prefWidth="213.0" promptText="Add artist" />
       <ImageView fx:id="profileIcon" fitHeight="49.0" fitWidth="51.0" layoutX="537.0" layoutY="7.0" onMouseClicked="#openProfile" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@3276535.png" />

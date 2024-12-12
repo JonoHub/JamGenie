@@ -56,13 +56,9 @@ public class SearchController {
         String response = apiHandler.sendRequest(params);
         //System.out.println(response);
         List<IMedia> albums = apiParser.apiParser(response, method);
-        int i = 0;
-        for (IMedia album : albums) {
-            System.out.println(i + " : " + album.toString());
-            i++;
-            // if (i >= 11) {
-            //     break;
-            // }
+        for (int i = 0; i < 5; i++) {
+            IMedia album = albums.get(i);
+            System.out.println((i+1) + " : " + album.toString());
         }
         return albums;
     }

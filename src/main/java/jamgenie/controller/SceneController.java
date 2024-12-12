@@ -115,12 +115,16 @@ public class SceneController {
     @FXML
     void albumMode(ActionEvent event) {
         searchPrompt.setPromptText("Search for an album");
+        albumButton.setDisable(true);
+        trackButton.setDisable(false);
         trackMode = false;
     }
 
     @FXML
     void trackMode(ActionEvent event) {
         searchPrompt.setPromptText("Search for a track");
+        trackButton.setDisable(true);
+        albumButton.setDisable(false);
         trackMode = true;
     }
 
