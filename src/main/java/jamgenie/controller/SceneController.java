@@ -14,8 +14,12 @@ import java.util.List;
 
 import jamgenie.api.ApiException;
 import jamgenie.model.IMedia;
+import jamgenie.model.User;
 
 public class SceneController {
+
+    User newUser = new User("janito");
+
 
     private SearchController searchController = new SearchController();
 
@@ -39,7 +43,7 @@ public class SceneController {
     @FXML
     void Search(ActionEvent event) throws ApiException {
         String nameSearch = searchPrompt.getText();
-        String artistSearch = searchPrompt.getText();
+        String artistSearch = artistPrompt.getText();
         List<IMedia> elements = new ArrayList<>();
         
         // fetch elements: albums, tracks etc
@@ -66,16 +70,34 @@ public class SceneController {
             if (element.getImageUrl() != null && !element.getImageUrl().isEmpty()) {
                 Image image = new Image(element.getImageUrl());
                 imageView.setImage(image);
-                imageView.setFitWidth(100); // Adjust image size
+                imageView.setFitWidth(100); // adjust image size
                 imageView.setFitHeight(100);
             }
 
+            // Create "Like" button
+            Button likeButton = new Button("Like");
+            likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+            likeButton.setOnAction(e -> handleLikeButtonClick(element, likeButton)); // handle like
+
             // Add components to result item
-            resultItem.getChildren().addAll(nameLabel, artistLabel, imageView);
+            resultItem.getChildren().addAll(nameLabel, artistLabel, imageView, likeButton);
 
             // Add result item to VBox
             resultsVBox.getChildren().add(resultItem);
         }
+    }
+
+    private void handleLikeButtonClick(IMedia element, Button likeButton) {
+        if(!element.isLiked()) {
+            newUser.addFavourites(element);
+            likeButton.setText("Dislike");
+            element.like();
+        } else {
+            newUser.removeFavourites(element);
+            likeButton.setText("Like");
+            element.like();
+        }
+        System.out.println(newUser.getFavourites());
     }
 
     @FXML
@@ -89,6 +111,5 @@ public class SceneController {
         searchPrompt.setPromptText("Search for a track");
         trackMode = true;
     }
-
 }
 

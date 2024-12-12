@@ -5,4 +5,6 @@ public interface IMedia {
     String getArtist();
     String getUrl();
     String getImageUrl();
+    void like();
+    Boolean isLiked();
 }

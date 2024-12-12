@@ -1,18 +1,32 @@
 package jamgenie.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
-    private final String username;
-    private final String password;
-    public User(String username, String password){  // Yes, I know, constructor with a password. This project's deadline is in less than 2 weeks... The interface is the main point, not security.
+    private String username;
+    // private String password;
+    private List<IMedia> favourites;
+
+    public User(String username){  
         
         this.username = username;
-        this.password = password;
-        
+        this.favourites = new ArrayList<>();
     }
     public String getUsername() {
         return username;
     }
-    public String getPassword() {
-        return password;
+    // public String getPassword() {
+    //     return password;
+    // }
+
+    public List<IMedia> getFavourites() {
+        return favourites;
+    }
+    public void removeFavourites(IMedia element) {
+        favourites.remove(element);
+    }
+    public void addFavourites(IMedia element) {
+        favourites.add(element);
     }
 }

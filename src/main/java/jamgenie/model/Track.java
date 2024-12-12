@@ -8,12 +8,14 @@ public class Track implements IMedia {
     private final String artist;
     private final String url;
     private final String imageUrl;
+    private Boolean isLiked;
 
     public Track(String name, String artist, String url, String imageUrl) {
         this.name = name;
         this.artist = artist;
         this.url = url;
         this.imageUrl = imageUrl;
+        this.isLiked = false;
     }
 
     public String getImageUrl() {
@@ -32,6 +34,14 @@ public class Track implements IMedia {
         return url;
     }
 
+    public Boolean isLiked() {
+        return isLiked;
+    }
+
+    public void like() {
+        isLiked = !isLiked;
+    }
+    
     @Override
     public String toString() {
         return name + " by " + artist + " (" + imageUrl + ")";
