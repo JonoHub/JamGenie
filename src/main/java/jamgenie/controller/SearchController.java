@@ -18,19 +18,20 @@ public class SearchController {
         this.apiParser = new LastFMApiParser();
     }
 
-    public void search(String name, String method, String artist) throws ApiException {
+    public List<IMedia> search(String name, String method, String artist) throws ApiException {
+        List<IMedia> resultsList;
         switch (method) {
             case "album.search" : {
-                searchAlbum(name);
-                break;
+                resultsList = searchAlbum(name);
+                return resultsList;
             }
             case "track.search" : {
-                searchTrack(name, method);
-                break;
+                resultsList = searchTrack(name, method);
+                return resultsList;
             }
             case "track.getsimilar" : {
-                searchSimilarTrack(name, method, artist);
-                break;
+                resultsList = searchSimilarTrack(name, method, artist);
+                return resultsList;
             }
             default: {
                 throw new IllegalArgumentException("Unsupported method: " + method);
@@ -43,7 +44,7 @@ public class SearchController {
      * @param albumName
      * @throws ApiException
      */
-    private void searchAlbum(String albumName) throws ApiException {
+    private List<IMedia> searchAlbum(String albumName) throws ApiException {
         albumName = fixName(albumName);
         //System.out.println(albumName);
         String method = "album.search";
@@ -63,6 +64,7 @@ public class SearchController {
                 break;
             }
         }
+        return albums;
     }
 
     /**
@@ -71,7 +73,7 @@ public class SearchController {
      * @param albumName
      * @throws ApiException
      */
-    private void searchTrack(String trackName, String method) throws ApiException {
+    private List<IMedia> searchTrack(String trackName, String method) throws ApiException {
         trackName = fixName(trackName);
         //System.out.println(trackName);
         // String method = "track.search";
@@ -92,6 +94,7 @@ public class SearchController {
             }
             i++;
         }
+        return tracks;
     }
 
     /**
@@ -100,7 +103,7 @@ public class SearchController {
      * @param albumName
      * @throws ApiException
      */
-    private void searchSimilarTrack(String trackName, String method, String artist) throws ApiException {
+    private List<IMedia> searchSimilarTrack(String trackName, String method, String artist) throws ApiException {
         trackName = fixName(trackName);
         artist = fixName(artist);
         // System.out.println(trackName);
@@ -123,6 +126,7 @@ public class SearchController {
             }
             i++;
         }
+        return tracks;
     }
 
 
