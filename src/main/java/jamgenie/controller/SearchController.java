@@ -60,9 +60,9 @@ public class SearchController {
         for (IMedia album : albums) {
             System.out.println(i + " : " + album.toString());
             i++;
-            if (i >= 11) {
-                break;
-            }
+            // if (i >= 11) {
+            //     break;
+            // }
         }
         return albums;
     }

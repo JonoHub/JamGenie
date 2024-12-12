@@ -13,6 +13,7 @@ public class Album implements IMedia{
         this.artist = artist;
         this.url = url;
         this.imageUrl = imageUrl;
+        this.isLiked = false;
     }
 
     public String getName() {

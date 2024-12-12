@@ -2,13 +2,20 @@ package jamgenie.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +25,13 @@ import jamgenie.model.User;
 
 public class SceneController {
 
-    User newUser = new User("janito");
-
-
     private SearchController searchController = new SearchController();
 
     private Boolean trackMode = true;
+
+    private User user;
+
+    private int listLimit = 5;
 
     @FXML
     private TextField artistPrompt;
@@ -39,6 +47,9 @@ public class SceneController {
 
     @FXML
     private Button trackButton;
+
+    @FXML
+    private ImageView profileIcon;
 
     @FXML
     void Search(ActionEvent event) throws ApiException {
@@ -57,7 +68,8 @@ public class SceneController {
         resultsVBox.getChildren().clear();
 
         // Display new results
-        for (IMedia element : elements) {
+        for (int i = 0; i < listLimit; i++) {
+            IMedia element = elements.get(i);
             VBox resultItem = new VBox(5); // VBox to hold name, artist, and image
             resultItem.setStyle("-fx-padding: 10px; -fx-border-color: gray; -fx-border-width: 1;");
 
@@ -87,17 +99,17 @@ public class SceneController {
         }
     }
 
-    private void handleLikeButtonClick(IMedia element, Button likeButton) {
+    public void handleLikeButtonClick(IMedia element, Button likeButton) {
         if(!element.isLiked()) {
-            newUser.addFavourites(element);
+            user.addFavourites(element);
             likeButton.setText("Dislike");
             element.like();
         } else {
-            newUser.removeFavourites(element);
+            user.removeFavourites(element);
             likeButton.setText("Like");
             element.like();
         }
-        System.out.println(newUser.getFavourites());
+        System.out.println(user.getFavourites());
     }
 
     @FXML
@@ -110,6 +122,35 @@ public class SceneController {
     void trackMode(ActionEvent event) {
         searchPrompt.setPromptText("Search for a track");
         trackMode = true;
+    }
+
+    @FXML
+    void openProfile(MouseEvent event) {
+        try {
+            // Load the ProfileScene FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/jamgenie/ProfileScene.fxml"));
+            Parent profileRoot = loader.load();
+
+            // Get the ProfileController
+            ProfileController profileController = loader.getController();
+
+            // Pass the current user to the profile controller
+            profileController.setUser(user);
+
+            // Get the current stage and set the new scene
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene profileScene = new Scene(profileRoot);
+            stage.setScene(profileScene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setUser(User user) {
+        System.out.println("USER :" + user.getUsername());
+        this.user = user;
     }
 }
 

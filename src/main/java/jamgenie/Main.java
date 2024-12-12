@@ -1,5 +1,7 @@
 package jamgenie;
 
+import jamgenie.controller.SceneController;
+import jamgenie.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,9 +19,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
+            User user = new User("jono");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScene.fxml"));
-            System.out.println(getClass().getResource("MainScene.fxml"));
             Parent root = loader.load();
+
+            SceneController sceneController = loader.getController();
+
+            sceneController.setUser(user);
 
             // Set up the Scene and Stage
             Scene scene = new Scene(root);
