@@ -40,6 +40,9 @@ public class Album implements IMedia{
         isLiked = !isLiked;
     }
 
+    public String getType(){
+        return "album";
+    }
 
     @Override
     public String toString() {

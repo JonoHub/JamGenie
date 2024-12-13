@@ -41,6 +41,9 @@ public class Track implements IMedia {
     public void like() {
         isLiked = !isLiked;
     }
+    public String getType(){
+        return "track";
+    }
     
     @Override
     public String toString() {

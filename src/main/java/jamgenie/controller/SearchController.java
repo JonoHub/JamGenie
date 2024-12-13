@@ -94,7 +94,7 @@ public class SearchController {
     }
 
     /**
-     * Controller for the album.search method. Called when the user searches for an albumName.
+     * Controller for the track.similar method. Called when the user searches for similar tracks to the one given.
      * 
      * @param albumName
      * @throws ApiException
@@ -115,12 +115,9 @@ public class SearchController {
         List<IMedia> tracks = apiParser.apiParser(response, method);
         // System.out.println(tracks.size());
         //System.out.println("================================================================================================================");
-        int i = 0;
-        for (IMedia track : tracks) {
-            if (i < 11) {
-            System.out.println(i + " : " + track.toString());
-            }
-            i++;
+        for (int i = 0; i < 10; i++) {
+            IMedia track = tracks.get(i);
+            System.out.println((i+1) + " : " + track.toString());
         }
         return tracks;
     }
