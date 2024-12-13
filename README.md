@@ -61,4 +61,4 @@ To run this project, you will need the following:
   
 ---
 
-***Thank you for reading!*
+*Thank you for reading!*
