@@ -7,6 +7,7 @@ public class Album implements IMedia{
     private String imageUrl;
 
     private Boolean isLiked;
+    private String basedOn;
 
     public Album(String name, String artist, String url, String imageUrl) {
         this.name = name;
@@ -42,6 +43,14 @@ public class Album implements IMedia{
 
     public String getType(){
         return "album";
+    }
+
+    public void setBasedOn(String basedOn) {
+        this.basedOn = basedOn;
+    }
+
+    public String getBasedOn() {
+        return basedOn;
     }
 
     @Override

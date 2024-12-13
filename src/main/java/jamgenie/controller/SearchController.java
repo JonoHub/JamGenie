@@ -115,10 +115,10 @@ public class SearchController {
         List<IMedia> tracks = apiParser.apiParser(response, method);
         // System.out.println(tracks.size());
         //System.out.println("================================================================================================================");
-        for (int i = 0; i < 10; i++) {
-            IMedia track = tracks.get(i);
-            System.out.println((i+1) + " : " + track.toString());
-        }
+        // for (int i = 0; i < 10; i++) {
+        //     IMedia track = tracks.get(i);
+        //     System.out.println((i+1) + " : " + track.toString());
+        // }
         return tracks;
     }
 

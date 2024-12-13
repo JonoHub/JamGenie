@@ -2,6 +2,7 @@ package jamgenie.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import jamgenie.api.ApiException;
 import jamgenie.model.IMedia;
@@ -12,7 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -114,31 +117,72 @@ public class ProfileController {
         }
     }
 
-    @FXML
+   @FXML
     void pressRecommended(ActionEvent event) throws ApiException {
-        recommendedMode = !recommendedMode;
-        if (recommendedMode) {
+        if (!recommendedMode) {
+            recommendedMode = true;
+
+            // Check if the user has already given consent
+            if (!user.doesUserConsent()) {
+                // Keep asking for permission until the user consents
+                while (!user.doesUserConsent()) {
+                    boolean permission = showConsentDialog();
+                    if (permission) {
+                        user.setUserConsent(true); // Store user's decision
+                    } else {
+                        // If the user denies, exit recommendation mode
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Permission Denied");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Recommendations require your consent to access favourites.");
+                        alert.showAndWait();
+
+                        recommendedMode = false;
+                        favouriteLabel.setText("Favourites");
+                        loadFavourites();
+                        return;
+                    }
+                }
+            }
+            // If user consents, load recommendations
             loadRecommended();
-        }
-        else {
+        } else {
+            // If exiting recommendation mode
+            recommendedMode = false;
             favouriteLabel.setText("Favourites");
             loadFavourites();
         }
-    }   
+    }
+
+    private boolean showConsentDialog() {
+        // Create an alert dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Permission Required");
+        alert.setHeaderText("Recommendation Permission");
+        alert.setContentText("Do you allow the app to use your favourites to generate recommendations?");
+
+        // Show the dialog and wait for the user's response
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
 
     private void loadRecommended() throws ApiException {
         favouriteLabel.setText("AI Recommended");
         resultsVBox.getChildren().clear(); // Clear existing content
-
-        List<IMedia> recomended = user.getRecommended();
-        for (IMedia element : recomended) {
-            VBox resultItem = new VBox(5); // VBox to hold name, artist, and image
+    
+        List<IMedia> recommended = user.getRecommended();
+        for (IMedia element : recommended) {
+            VBox resultItem = new VBox(5); // VBox to hold name, artist, image, and source favorite
             resultItem.setStyle("-fx-padding: 10px; -fx-border-color: gray; -fx-border-width: 1;");
-
+    
             // Song name and artist
             Label nameLabel = new Label("Song: " + element.getName());
             Label artistLabel = new Label("Artist: " + element.getArtist());
-
+    
+            // Display the favorite track/album that this recommendation is based on
+            Label sourceLabel = new Label("Based on favorite: " + element.getBasedOn());
+    
             // Image
             ImageView imageView = new ImageView();
             if (element.getImageUrl() != null && !element.getImageUrl().isEmpty()) {
@@ -147,15 +191,15 @@ public class ProfileController {
                 imageView.setFitWidth(100); // Adjust image size
                 imageView.setFitHeight(100);
             }
-
+    
             // Create "Like" button
             Button likeButton = new Button("Like");
             likeButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
             likeButton.setOnAction(e -> handleLikeButtonClick(element, likeButton, resultItem)); // handle like
-            
+    
             // Add components to result item
-            resultItem.getChildren().addAll(nameLabel, artistLabel, imageView, likeButton);
-
+            resultItem.getChildren().addAll(nameLabel, artistLabel, sourceLabel, imageView, likeButton);
+    
             // Add result item to VBox
             resultsVBox.getChildren().add(resultItem);
         }

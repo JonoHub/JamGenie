@@ -8,4 +8,6 @@ public interface IMedia {
     String getImageUrl();
     void like();
     Boolean isLiked();
+    String getBasedOn();
+    void setBasedOn(String basedOn);
 }

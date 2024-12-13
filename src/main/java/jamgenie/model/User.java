@@ -12,6 +12,7 @@ public class User {
     private Set<String> processedFavourites = new HashSet<>(); // Track processed favorites
     private Set<String> favouriteNames = new HashSet<>(); // Track favorite names for quick checks
     private Set<String> recommendedNames = new HashSet<>();
+    private Boolean userConsent = null;
 
     private SearchController searchController = new SearchController();
     private int recommendedPerElement = 5;
@@ -45,34 +46,37 @@ public class User {
         return recommended;
     }
 
+    public boolean doesUserConsent() {
+        return Boolean.TRUE.equals(userConsent); // Return true if consent is granted
+    }
+
+    public void setUserConsent(boolean consent) {
+        this.userConsent = consent; // Update consent
+    }
+
     private void searchRecommended() throws ApiException {
-        recommended.clear(); // Clear previous recommendations
+        //recommended.clear(); // Clear previous recommendations
         for (IMedia element : favourites) {
-            // Skip already processed favorites
             if (!processedFavourites.contains(element.getName())) {
                 List<IMedia> similarList;
-    
-                // Check if the element is an album or track and adjust the search method
-                if (element.getType().equalsIgnoreCase("album")) { // Assuming `IMedia` has a `getType()` method
-                    similarList = searchController.search(element.getName(), "album.setsimilar", element.getArtist());
+                if (element.getType().equalsIgnoreCase("album")) {
+                    similarList = searchController.search(element.getName(), "album.getsimilar", element.getArtist());
                 } else {
                     similarList = searchController.search(element.getName(), "track.getsimilar", element.getArtist());
                 }
     
-                // Add only up to `recommendedPerElement`, avoid duplicates, and skip if in favorites
                 for (IMedia similar : similarList.subList(0, Math.min(recommendedPerElement, similarList.size()))) {
                     if (!favouriteNames.contains(similar.getName()) && !recommendedNames.contains(similar.getName())) {
+                        similar.setBasedOn(element.getName()); // Set the favorite this recommendation is based on
                         recommended.add(similar);
-                        recommendedNames.add(similar.getName()); // Track added recommendation
+                        recommendedNames.add(similar.getName());
                     }
                 }
-    
-                // Mark this favorite as processed
                 processedFavourites.add(element.getName());
             }
         }
-    
         Collections.shuffle(recommended);
     }
+    
     
 }

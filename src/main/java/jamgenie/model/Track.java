@@ -9,6 +9,7 @@ public class Track implements IMedia {
     private final String url;
     private final String imageUrl;
     private Boolean isLiked;
+    private String basedOn;
 
     public Track(String name, String artist, String url, String imageUrl) {
         this.name = name;
@@ -43,6 +44,14 @@ public class Track implements IMedia {
     }
     public String getType(){
         return "track";
+    }
+
+    public void setBasedOn(String basedOn) {
+        this.basedOn = basedOn;
+    }
+
+    public String getBasedOn() {
+        return basedOn;
     }
     
     @Override
