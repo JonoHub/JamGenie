@@ -96,7 +96,7 @@ public class SearchController {
     /**
      * Controller for the track.similar method. Called when the user searches for similar tracks to the one given.
      * 
-     * @param albumName
+     * @param trackName
      * @throws ApiException
      */
     private List<IMedia> searchSimilarTrack(String trackName, String method, String artist) throws ApiException {
