@@ -25,7 +25,7 @@ To run this project, you will need the following:
 1. **Clone the Repository**:  
    Clone this repository to your local machine using:  
    ```bash
-   git clone [[repository URL]](https://github.com/JonoHub/JamGenie.git)
+   git clone https://github.com/JonoHub/JamGenie.git
    ```  
 
 2. **Set Up the Project**:  
