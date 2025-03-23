@@ -6,7 +6,7 @@ This program was developed as a project for the 'Intelligent User Interfaces' co
 ## *Features*
 - Search for songs and albums manually.  
 - Save your favorites with a "like" button.  
-- Get AI-recommended tracks based on your favorites.  
+- Get recommended tracks based on your favorites.  
 
 ---
 
